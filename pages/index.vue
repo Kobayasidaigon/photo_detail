@@ -2,13 +2,14 @@
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
       <v-btn @click="check">click</v-btn>
-      <v-card class="mx-auto" max-width="300" tile>
+      <v-card  max-width="500"  class="mx-auto">
         <v-list rounded>
           <v-subheader>REPORTS</v-subheader>
           <v-list-item-group  color="primary">
-            <v-list-item v-for="label in this.label" :key="label">
+            <v-list-item v-for="label in this.label" :key="label.mid">
               <v-list-item-content>
-                <v-list-item-title v-text="label"></v-list-item-title>
+                <v-list-item-title v-text="label.description"></v-list-item-title>
+                <v-list-item-subtitle v-text="label.score"></v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -54,12 +55,9 @@ export default {
       axios
         .post(api_url, request)
         .then(response => {
-          for (
-            var i = 0;
-            i < response.data.responses[0].labelAnnotations.length;
-            i++
-          ) {
-            this.label = response.data.responses[0].labelAnnotations[i];
+          for (var i = 0;i < response.data.responses[0].labelAnnotations.length;i++) {
+            console.log(response.data.responses[0].labelAnnotations[i]);
+            this.label.push(response.data.responses[0].labelAnnotations[i]);
           }
         })
         .catch(error => {
