@@ -1,11 +1,18 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <v-btn @click="check">click</v-btn>
-      <v-card  max-width="500"  class="mx-auto">
+      <div id="upload_prev" class="upload"></div>
+      <label class="upload-img-btn">
+        画像を選択
+        <input type="file" id="hoge" @change="photo" style="display:none;" />
+      </label>
+    </v-flex>
+    <v-btn @click="check" v-bind:disabled="click">click</v-btn>
+    <v-flex xs12 sm8 md6>
+      <v-card max-width="500" class="mx-auto">
         <v-list rounded>
           <v-subheader>REPORTS</v-subheader>
-          <v-list-item-group  color="primary">
+          <v-list-item-group color="primary">
             <v-list-item v-for="label in this.label" :key="label.mid">
               <v-list-item-content>
                 <v-list-item-title v-text="label.description"></v-list-item-title>
@@ -21,27 +28,25 @@
 
 <script>
 import axios from "axios";
-const KEY = "";
+const KEY = "AIzaSyCVOiQfzqwYai-ecVlvAhlRyG_BS61pKas";
 const url = "https://vision.googleapis.com/v1/images:annotate?key=";
 const api_url = url + KEY;
 
 export default {
   data() {
     return {
-      label: []
+      label: [],
+      local_photo: "",
+      click:false
     };
   },
   methods: {
     check: function() {
-      var imageUrl =
-        "https://firebasestorage.googleapis.com/v0/b/train-77065.appspot.com/o/1e8df79c-828a-4fb2-b6fd-9771e17771b1?alt=media&token=73cbc8b7-4501-42f5-aace-d904745d53ab";
       var request = {
         requests: [
           {
             image: {
-              source: {
-                imageUri: imageUrl
-              }
+              content: this.local_photo
             },
             features: [
               {
@@ -55,7 +60,11 @@ export default {
       axios
         .post(api_url, request)
         .then(response => {
-          for (var i = 0;i < response.data.responses[0].labelAnnotations.length;i++) {
+          for (
+            var i = 0;
+            i < response.data.responses[0].labelAnnotations.length;
+            i++
+          ) {
             console.log(response.data.responses[0].labelAnnotations[i]);
             this.label.push(response.data.responses[0].labelAnnotations[i]);
           }
@@ -63,7 +72,47 @@ export default {
         .catch(error => {
           console.log(error.response);
         });
+    },
+    photo: function(element) {
+      var element = document.getElementById("hoge");
+      var file = element.files[0];
+      var fileReader = new FileReader();
+      const self = this
+      fileReader.onload = function(element) {
+        const img = document.getElementById("upload_prev");
+        img.style.backgroundImage = "url(" + element.target.result + ")";
+
+        //base64の値取得
+        var damy_photo_url = this.result
+        //いらない記述を削除
+        self.local_photo = damy_photo_url.slice(23);
+        
+      };
+      fileReader.readAsDataURL(file);
+      this.click=!this.click;
     }
   }
 };
 </script>
+
+<style scoped>
+.upload {
+  width: 330px;
+  height: 200px;
+  margin-top: 32px;
+  border-radius: 8px;
+  background: transparent;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: 2px dashed rgba(112, 112, 112, 0.6);
+}
+.upload > .upload-img-btn {
+  display: block;
+  max-width: 120px;
+  margin: 45% auto;
+  padding: 15px;
+  text-align: center;
+  color: #515151;
+  border-radius: 4px;
+}
+</style>
