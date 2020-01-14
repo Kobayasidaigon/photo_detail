@@ -2,8 +2,10 @@
   <v-layout column justify-center align-center>
     
     <v-flex xs12 sm8 md6>
-      <div id="upload_prev" class="upload"></div>
-
+      <div id="upload_prev" class="upload">
+        <img id="photo">
+      </div>
+      <img id="img_src">
       <label class="upload-img-btn">
         画像を選択
         <input type="file" id="hoge" @change="photo" style="display:none;">
@@ -72,17 +74,18 @@ export default {
     },
     photo:function(element){
       var element = document.getElementById("hoge");
-      this.file = element.files[0];
+      var file = element.files[0];
       var fileReader = new FileReader();
 
       fileReader.onload = function(element){
-        const img = document.getElementById("upload_prev");
+        const img = document.getElementById("photo");
         img.style.backgroundImage =  "url(" + element.target.result + ")";
       };
       
-      fileReader.readAsDataURL(this.file);
-      
-
+      fileReader.onload =function(){
+        var dataURI = this.result ;
+      }
+      fileReader.readAsDataURL(file);
     }
   }
 };
