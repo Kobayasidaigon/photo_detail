@@ -7,7 +7,7 @@
         <input type="file" id="hoge" @change="photo" style="display:none;" />
       </label>
     </v-flex>
-    <v-btn @click="check">click</v-btn>
+    <v-btn @click="check" v-bind:disabled="click">click</v-btn>
     <v-flex xs12 sm8 md6>
       <v-card max-width="500" class="mx-auto">
         <v-list rounded>
@@ -36,7 +36,8 @@ export default {
   data() {
     return {
       label: [],
-      local_photo: ""
+      local_photo: "",
+      click:false
     };
   },
   methods: {
@@ -81,13 +82,14 @@ export default {
         const img = document.getElementById("upload_prev");
         img.style.backgroundImage = "url(" + element.target.result + ")";
 
+        //base64の値取得
         var damy_photo_url = this.result
+        //いらない記述を削除
         self.local_photo = damy_photo_url.slice(23);
         
-        console.log(self.local_photo);
       };
-
       fileReader.readAsDataURL(file);
+      this.click=!this.click;
     }
   }
 };
@@ -96,7 +98,7 @@ export default {
 <style scoped>
 .upload {
   width: 330px;
-  height: 265px;
+  height: 200px;
   margin-top: 32px;
   border-radius: 8px;
   background: transparent;
