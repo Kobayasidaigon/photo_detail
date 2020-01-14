@@ -1,22 +1,18 @@
 <template>
   <v-layout column justify-center align-center>
-    
     <v-flex xs12 sm8 md6>
-      <div id="upload_prev" class="upload">
-        <img id="photo">
-      </div>
-      <img id="img_src">
+      <div id="upload_prev" class="upload"></div>
       <label class="upload-img-btn">
         画像を選択
-        <input type="file" id="hoge" @change="photo" style="display:none;">
+        <input type="file" id="hoge" @change="photo" style="display:none;" />
       </label>
     </v-flex>
     <v-btn @click="check">click</v-btn>
     <v-flex xs12 sm8 md6>
-      <v-card  max-width="500"  class="mx-auto">
+      <v-card max-width="500" class="mx-auto">
         <v-list rounded>
           <v-subheader>REPORTS</v-subheader>
-          <v-list-item-group  color="primary">
+          <v-list-item-group color="primary">
             <v-list-item v-for="label in this.label" :key="label.mid">
               <v-list-item-content>
                 <v-list-item-title v-text="label.description"></v-list-item-title>
@@ -32,7 +28,7 @@
 
 <script>
 import axios from "axios";
-const KEY = "";
+const KEY = "AIzaSyCVOiQfzqwYai-ecVlvAhlRyG_BS61pKas";
 const url = "https://vision.googleapis.com/v1/images:annotate?key=";
 const api_url = url + KEY;
 
@@ -40,16 +36,16 @@ export default {
   data() {
     return {
       label: [],
-      local_photo:""
+      local_photo: ""
     };
   },
   methods: {
     check: function() {
-     var request = {
+      var request = {
         requests: [
           {
             image: {
-              "content":this.local_photo
+              content: this.local_photo
             },
             features: [
               {
@@ -63,7 +59,11 @@ export default {
       axios
         .post(api_url, request)
         .then(response => {
-          for (var i = 0;i < response.data.responses[0].labelAnnotations.length;i++) {
+          for (
+            var i = 0;
+            i < response.data.responses[0].labelAnnotations.length;
+            i++
+          ) {
             console.log(response.data.responses[0].labelAnnotations[i]);
             this.label.push(response.data.responses[0].labelAnnotations[i]);
           }
@@ -72,19 +72,21 @@ export default {
           console.log(error.response);
         });
     },
-    photo:function(element){
+    photo: function(element) {
       var element = document.getElementById("hoge");
       var file = element.files[0];
       var fileReader = new FileReader();
+      const self = this
+      fileReader.onload = function(element) {
+        const img = document.getElementById("upload_prev");
+        img.style.backgroundImage = "url(" + element.target.result + ")";
 
-      fileReader.onload = function(element){
-        const img = document.getElementById("photo");
-        img.style.backgroundImage =  "url(" + element.target.result + ")";
+        var damy_photo_url = this.result
+        self.local_photo = damy_photo_url.slice(23);
+        
+        console.log(self.local_photo);
       };
-      
-      fileReader.onload =function(){
-        var dataURI = this.result ;
-      }
+
       fileReader.readAsDataURL(file);
     }
   }
