@@ -1,6 +1,8 @@
+
 <script>
 import { Radar } from "vue-chartjs";
 export default {
+  name:'Chart',
   extends: Radar,
   mounted() {
     this.renderChart(
@@ -32,6 +34,14 @@ export default {
       },
       { responsive: true, maintainAspectRatio: false }
     );
+    this.check();
+  },
+  props:["label"], // シンプルシンタックス
+  methods:{
+    check:function () {
+    console.log(this.label);
   }
+
+  } 
 };
 </script>

@@ -22,7 +22,7 @@
           </v-list-item-group>
         </v-list>
       </v-card>
-      <Chart></Chart>
+      <Chart :label="label" v-if="loaded"></Chart>
     </v-flex>
   </v-layout>
 </template>
@@ -40,11 +40,12 @@ export default {
     return {
       label: [],
       local_photo: "",
-      click:false
+      click:true,
+      loaded:false
     };
   },
   methods: {
-    check: function() {
+    async check() {
       var request = {
         requests: [
           {
@@ -60,21 +61,15 @@ export default {
           }
         ]
       };
-      axios
-        .post(api_url, request)
-        .then(response => {
-          for (
-            var i = 0;
-            i < response.data.responses[0].labelAnnotations.length;
-            i++
-          ) {
-            console.log(response.data.responses[0].labelAnnotations[i]);
+      await  axios.post(api_url, request).then(response => {
+          for (var i = 0;i < response.data.responses[0].labelAnnotations.length;i++) {
             this.label.push(response.data.responses[0].labelAnnotations[i]);
           }
         })
         .catch(error => {
           console.log(error.response);
         });
+        this.loaded=!this.loaded;
     },
     photo: function(element) {
       var element = document.getElementById("hoge");
