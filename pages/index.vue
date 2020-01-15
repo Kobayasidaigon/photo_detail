@@ -31,7 +31,7 @@
 
 import Chart from "~/components/Vuechart.vue"
 import axios from "axios";
-const KEY = "AIzaSyCVOiQfzqwYai-ecVlvAhlRyG_BS61pKas";
+const KEY = "";
 const url = "https://vision.googleapis.com/v1/images:annotate?key=";
 const api_url = url + KEY;
 
