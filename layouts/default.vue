@@ -51,6 +51,9 @@
 </template>
 
 <script>
+import 'chart.js'
+import 'hchs-vue-charts'
+
 export default {
   data() {
     return {

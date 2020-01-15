@@ -22,11 +22,14 @@
           </v-list-item-group>
         </v-list>
       </v-card>
+      <Chart></Chart>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
+
+import Chart from "~/components/Vuechart.vue"
 import axios from "axios";
 const KEY = "AIzaSyCVOiQfzqwYai-ecVlvAhlRyG_BS61pKas";
 const url = "https://vision.googleapis.com/v1/images:annotate?key=";
@@ -91,6 +94,9 @@ export default {
       fileReader.readAsDataURL(file);
       this.click=!this.click;
     }
+  },
+  components:{
+    Chart
   }
 };
 </script>
