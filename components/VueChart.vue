@@ -2,16 +2,22 @@
 <script>
 import { Radar } from "vue-chartjs";
 export default {
+  data:function(){{
+    return{
+      safe_data:[],
+      safe_point:[]
+    }
+  }},
   name:'Chart',
   extends: Radar,
   mounted() {
     this.renderChart(
       {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: ["adult", "spoof", "medical", "violence", "racy"],
         datasets: [
           {
-            label: "# of Votes",
-            data: [12, 0, 3, 4, 2, 3],
+            label: "成分",
+            data: [12, 3, 4, 2, 3],
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
               "rgba(54, 162, 235, 0.2)",
@@ -36,12 +42,30 @@ export default {
     );
     this.check();
   },
-  props:["label"], // シンプルシンタックス
+  props:["safe"], 
   methods:{
     check:function () {
-    console.log(this.label);
-  }
-
+      this.safe_data = this.safe;
+      this.change_string_to_number(this.safe_data[0].adult);
+      this.change_string_to_number(this.safe_data[0].spoof);
+      this.change_string_to_number(this.safe_data[0].medical);
+      this.change_string_to_number(this.safe_data[0].violence);
+      this.change_string_to_number(this.safe_data[0].racy);
+    },
+    change_string_to_number:function(string){
+        if(string==="VERY_UNLIKELY"){
+          this.safe_point.push("0");
+        }
+        if(string==="UNLIKELY"){        
+          this.safe_point.push("1");
+        }
+        if(string==="LIKELY"){    
+          this.safe_point.push("2");
+        }
+        if(string==="VERY_LIKELY"){   
+          this.safe_point.push("3");
+        }
+    }
   } 
 };
 </script>

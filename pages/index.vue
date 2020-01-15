@@ -22,14 +22,13 @@
           </v-list-item-group>
         </v-list>
       </v-card>
-      <Chart :label="label" v-if="loaded"></Chart>
+      <Chart  :safe="safe" v-if="loaded"></Chart>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-
-import Chart from "~/components/Vuechart.vue"
+import Chart from "~/components/Vuechart.vue";
 import axios from "axios";
 const KEY = "AIzaSyCVOiQfzqwYai-ecVlvAhlRyG_BS61pKas";
 const url = "https://vision.googleapis.com/v1/images:annotate?key=";
@@ -39,9 +38,10 @@ export default {
   data() {
     return {
       label: [],
+      safe: [],
       local_photo: "",
-      click:true,
-      loaded:false
+      click: true,
+      loaded: false
     };
   },
   methods: {
@@ -56,41 +56,44 @@ export default {
               {
                 type: "LABEL_DETECTION",
                 maxResults: 5
+              },
+              {
+                type: "SAFE_SEARCH_DETECTION"
               }
             ]
           }
         ]
       };
-      await  axios.post(api_url, request).then(response => {
+      await axios.post(api_url, request).then(response => {
           for (var i = 0;i < response.data.responses[0].labelAnnotations.length;i++) {
             this.label.push(response.data.responses[0].labelAnnotations[i]);
           }
+          this.safe.push(response.data.responses[0].safeSearchAnnotation);
         })
         .catch(error => {
           console.log(error.response);
         });
-        this.loaded=!this.loaded;
+      this.loaded = !this.loaded;
     },
     photo: function(element) {
       var element = document.getElementById("hoge");
       var file = element.files[0];
       var fileReader = new FileReader();
-      const self = this
+      const self = this;
       fileReader.onload = function(element) {
         const img = document.getElementById("upload_prev");
         img.style.backgroundImage = "url(" + element.target.result + ")";
 
         //base64の値取得
-        var damy_photo_url = this.result
+        var damy_photo_url = this.result;
         //いらない記述を削除
         self.local_photo = damy_photo_url.slice(23);
-        
       };
       fileReader.readAsDataURL(file);
-      this.click=!this.click;
+      this.click = !this.click;
     }
   },
-  components:{
+  components: {
     Chart
   }
 };
