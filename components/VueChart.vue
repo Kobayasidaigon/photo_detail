@@ -10,14 +10,46 @@ export default {
   }},
   name:'Chart',
   extends: Radar,
-  mounted() {
+   mounted() {
+    this.check();
+  },
+  props:["safe"], 
+  methods:{
+    check:function () {
+      this.safe_data = this.safe;
+      this.change_string_to_number(this.safe_data[0].adult);
+      this.change_string_to_number(this.safe_data[0].spoof);
+      this.change_string_to_number(this.safe_data[0].medical);
+      this.change_string_to_number(this.safe_data[0].violence);
+      this.change_string_to_number(this.safe_data[0].racy);
+      this.draw_graph();
+    },
+    change_string_to_number:function(string){
+        if(string==="VERY_UNLIKELY"){
+          this.safe_point.push("2");
+        }
+        else if(string==="UNLIKELY"){        
+          this.safe_point.push("4");
+        }
+        else if(string==="POSSIBLE"){    
+          this.safe_point.push("6");
+        }
+        else if(string==="LIKELY"){    
+          this.safe_point.push("8");
+        }
+        else if(string==="VERY_LIKELY"){   
+          this.safe_point.push("10");
+        }
+    },
+    draw_graph:function(){
+      
     this.renderChart(
       {
-        labels: ["adult", "spoof", "medical", "violence", "racy"],
+        labels: ["アダルト", "なりすまし", "医療", "暴力的", "際どい表現"],
         datasets: [
           {
             label: "成分",
-            data: [12, 3, 4, 2, 3],
+            data: this.safe_point,
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
               "rgba(54, 162, 235, 0.2)",
@@ -34,37 +66,12 @@ export default {
               "rgba(153, 102, 255, 1)",
               "rgba(255, 159, 64, 1)"
             ],
-            borderWidth: 0
+            borderWidth: 2
           }
         ]
       },
       { responsive: true, maintainAspectRatio: false }
     );
-    this.check();
-  },
-  props:["safe"], 
-  methods:{
-    check:function () {
-      this.safe_data = this.safe;
-      this.change_string_to_number(this.safe_data[0].adult);
-      this.change_string_to_number(this.safe_data[0].spoof);
-      this.change_string_to_number(this.safe_data[0].medical);
-      this.change_string_to_number(this.safe_data[0].violence);
-      this.change_string_to_number(this.safe_data[0].racy);
-    },
-    change_string_to_number:function(string){
-        if(string==="VERY_UNLIKELY"){
-          this.safe_point.push("0");
-        }
-        if(string==="UNLIKELY"){        
-          this.safe_point.push("1");
-        }
-        if(string==="LIKELY"){    
-          this.safe_point.push("2");
-        }
-        if(string==="VERY_LIKELY"){   
-          this.safe_point.push("3");
-        }
     }
   } 
 };
