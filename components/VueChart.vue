@@ -23,6 +23,8 @@ export default {
       this.change_string_to_number(this.safe_data[0].violence);
       this.change_string_to_number(this.safe_data[0].racy);
       this.draw_graph();
+      //次回以降の表示のために削除
+      this.safe_point=[];
     },
     change_string_to_number:function(string){
         if(string==="VERY_UNLIKELY"){

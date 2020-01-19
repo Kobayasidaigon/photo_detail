@@ -54,6 +54,7 @@ export default {
         this.local_photo= ""
         this.send_info = !this.send_info;
         this.reset = !this.reset;
+        this.loaded = !this.loaded;
         const img = document.getElementById("upload_prev");
         img.style.backgroundImage = "";
     },
