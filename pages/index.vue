@@ -7,7 +7,8 @@
         <input type="file" id="hoge" @change="photo" style="display:none;" />
       </label>
     </v-flex>
-    <v-btn @click="check" v-bind:disabled="click">click</v-btn>
+    <v-btn @click="check" v-bind:disabled="send_info">click</v-btn>
+    <v-btn @click="reset_button" v-bind:disabled="reset">reset</v-btn>
     <v-flex xs12 sm8 md6>
       <v-card max-width="500" class="mx-auto">
         <v-list rounded>
@@ -30,7 +31,7 @@
 <script>
 import Chart from "~/components/Vuechart.vue";
 import axios from "axios";
-const KEY = "";
+const KEY = "AIzaSyCVOiQfzqwYai-ecVlvAhlRyG_BS61pKas";
 const url = "https://vision.googleapis.com/v1/images:annotate?key=";
 const api_url = url + KEY;
 
@@ -40,11 +41,22 @@ export default {
       label: [],
       safe: [],
       local_photo: "",
-      click: true,
+      send_info: true,
+      reset:true,
       loaded: false
     };
   },
   methods: {
+    reset_button:function(){
+      
+        this.label= [],
+        this.safe= [],
+        this.local_photo= ""
+        this.send_info = !this.send_info;
+        this.reset = !this.reset;
+        const img = document.getElementById("upload_prev");
+        img.style.backgroundImage = "";
+    },
     async check() {
       var request = {
         requests: [
@@ -75,7 +87,7 @@ export default {
         });
       this.loaded = !this.loaded;
     },
-    photo: function(element) {
+    photo: function() {
       var element = document.getElementById("hoge");
       var file = element.files[0];
       var fileReader = new FileReader();
@@ -90,7 +102,8 @@ export default {
         self.local_photo = damy_photo_url.slice(23);
       };
       fileReader.readAsDataURL(file);
-      this.click = !this.click;
+      this.send_info = !this.send_info;
+      this.reset = !this.reset;
     }
   },
   components: {
