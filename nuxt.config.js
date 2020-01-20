@@ -1,5 +1,8 @@
 import colors from "vuetify/es5/util/colors";
 
+require("dotenv").config();
+const { API } = process.env;
+
 export default {
   mode: "spa",
   /*
@@ -19,7 +22,11 @@ export default {
     ],
     link: [
       { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
-      { rel: "stylesheet",href:"https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.2/css/bulma.min.css"}
+      {
+        rel: "stylesheet",
+        href:
+          "https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.2/css/bulma.min.css"
+      }
     ]
   },
   /*
@@ -37,14 +44,11 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ["@nuxtjs/vuetify"],
+  buildModules: ["@nuxtjs/vuetify", "@nuxtjs/dotenv"],
   /*
    ** Nuxt.js modules
    */
-  modules: [
-    '@nuxtjs/axios',
-    '@nuxtjs/proxy'
-  ],
+  modules: ["@nuxtjs/axios", "@nuxtjs/proxy"],
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
@@ -76,9 +80,10 @@ export default {
     extend(config, ctx) {}
   },
   axios: {
-    prefix: 'https://vision.googleapis.com/v1/images:annotateAIzaSyCVOiQfzqwYai-ecVlvAhlRyG_BS61pKas',
+    prefix:
+      "https://vision.googleapis.com/v1/images:annotateAIzaSyCVOiQfzqwYai-ecVlvAhlRyG_BS61pKas"
   },
-   
- 
-  
+  env: {
+    API
+  }
 };
