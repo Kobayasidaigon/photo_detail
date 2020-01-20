@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <v-app-bar :clipped-left="clipped" fixed app>
+    <v-app-bar  fixed app>
       <v-toolbar-title v-text="title" />
       <v-spacer />
     </v-app-bar>
