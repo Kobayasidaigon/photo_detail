@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import Chart from "~/components/Vuechart.vue";
+import Chart from "../components/VueChart";
 import axios from "axios";
 const KEY = process.env.API;
 const url = "https://vision.googleapis.com/v1/images:annotate?key=";
