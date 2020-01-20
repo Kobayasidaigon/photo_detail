@@ -34,7 +34,6 @@ import axios from "axios";
 const KEY = "AIzaSyCVOiQfzqwYai-ecVlvAhlRyG_BS61pKas";
 const url = "https://vision.googleapis.com/v1/images:annotate?key=";
 const api_url = url + KEY;
-console.log(KEY);
 export default {
   data() {
     return {
