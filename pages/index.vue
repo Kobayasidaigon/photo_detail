@@ -52,8 +52,8 @@ export default {
         this.label= [],
         this.safe= [],
         this.local_photo= ""
-        this.send_info = !this.send_info;
-        this.reset = !this.reset;
+        this.send_info = true;
+        this.reset = true;
         this.loaded = !this.loaded;
         const img = document.getElementById("upload_prev");
         img.style.backgroundImage = "";
@@ -87,6 +87,7 @@ export default {
           console.log(error.response);
         });
       this.loaded = !this.loaded;
+      this.reset = false;
     },
     photo: function() {
       var element = document.getElementById("hoge");
@@ -103,8 +104,7 @@ export default {
         self.local_photo = damy_photo_url.slice(23);
       };
       fileReader.readAsDataURL(file);
-      this.send_info = !this.send_info;
-      this.reset = !this.reset;
+      this.send_info = false;
     }
   },
   components: {
